@@ -1,0 +1,27 @@
+{
+  "projectName": "rebel-hacks",
+  "mode": "file-router",
+  "typescript": true,
+  "packageManager": "pnpm",
+  "includeExamples": true,
+  "tailwind": true,
+  "addOnOptions": {},
+  "envVarValues": {
+    "CONVEX_DEPLOYMENT": "rebel-hacks",
+    "VITE_CONVEX_URL": "https://wry-mole-493.convex.cloud",
+    "VITE_CLERK_PUBLISHABLE_KEY": "pk_test_ZGlzdGluY3QtcmF0dGxlci0xOC5jbGVyay5hY2NvdW50cy5kZXYk"
+  },
+  "git": false,
+  "routerOnly": false,
+  "version": 1,
+  "framework": "react-cra",
+  "chosenAddOns": [
+    "eslint",
+    "nitro",
+    "convex",
+    "clerk",
+    "shadcn",
+    "tanstack-query",
+    "t3env"
+  ]
+}

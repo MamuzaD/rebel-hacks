@@ -15,8 +15,10 @@
     "check": "prettier --write . && eslint --fix"
   },
   "dependencies": {
+    "@base-ui/react": "^1.2.0",
     "@clerk/clerk-react": "^5.49.0",
     "@convex-dev/react-query": "0.1.0",
+    "@fontsource-variable/noto-sans": "^5.2.10",
     "@t3-oss/env-core": "^0.13.8",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-devtools": "^0.7.0",
@@ -34,6 +36,7 @@
     "nitro": "npm:nitro-nightly@latest",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "shadcn": "^3.8.5",
     "tailwind-merge": "^3.0.2",
     "tailwindcss": "^4.1.18",
     "tw-animate-css": "^1.3.6",

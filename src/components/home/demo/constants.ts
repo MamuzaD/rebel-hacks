@@ -27,7 +27,7 @@ export type DemoPostData = {
   authorName: string
   authorHandle: string
   timeAgo: string
-  claim: string
+  caption?: string
   /** true = truth, false = bluff */
   isTruth: boolean
 }
@@ -41,7 +41,7 @@ export const DEMO_POSTS: DemoPostData[] = [
     authorName: 'Jimi Vasko',
     authorHandle: 'vasko',
     timeAgo: '2h ago',
-    claim: `This happened when I was in Japan and they asked me where I'm from, and I said Vegas, they immediately assumed that I live on the strip and life must always be exciting.`,
+    caption: `This happened when I was in Japan and they asked me where I'm from, and I said Vegas, they immediately assumed that I live on the strip and life must always be exciting.`,
     isTruth: true,
   },
   {
@@ -51,7 +51,7 @@ export const DEMO_POSTS: DemoPostData[] = [
     authorName: 'Richies Huynh',
     authorHandle: 'richies',
     timeAgo: '4h ago',
-    claim: `I’d never tell tourists about Esther’s Kitchen`,
+    caption: `I’d never tell tourists about Esther’s Kitchen`,
     isTruth: true,
   },
   {
@@ -60,7 +60,7 @@ export const DEMO_POSTS: DemoPostData[] = [
     authorName: 'Sam Black',
     authorHandle: 'black',
     timeAgo: '5h ago',
-    claim:
+    caption:
       'Best local spot in town. No tourists, no lines — and the slot machine pays out in chicken wings.',
     isTruth: false,
   },

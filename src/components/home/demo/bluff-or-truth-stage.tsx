@@ -1,14 +1,10 @@
+import { Avatar, AvatarImage } from '@/components/ui/avatar'
+import type { MotionValue } from 'motion'
 import { animate, motion, useTransform } from 'motion/react'
+import type { MutableRefObject } from 'react'
 import { useEffect, useRef } from 'react'
 import { useSwipeable } from 'react-swipeable'
-import type { MotionValue } from 'motion'
-import type { MutableRefObject } from 'react'
-import {
-  BLUFF_OR_TRUTH_STAGE,
-  DEMO_POSTS,
-  SNAP_SPRING,
-  SWIPE_THRESHOLD,
-} from './constants'
+import { BLUFF_OR_TRUTH_STAGE, DEMO_POSTS, SNAP_SPRING, SWIPE_THRESHOLD } from './constants'
 import type { IPostData } from './types'
 
 interface BluffOrTruthStageProps {
@@ -47,12 +43,12 @@ export function BluffOrTruthStage({
   // Smooth swipe hint — uses animate() so it feels natural
   useEffect(() => {
     if (shouldReduceMotion || hintAnimatedRef.current) return
-    const t = setTimeout(async () => {
+    const t = setTimeout(() => {
       if (hintAnimatedRef.current) return
       hintAnimatedRef.current = true
-      await animate(x, 36, { duration: 0.22, ease: 'easeOut' })
-      await animate(x, -24, { duration: 0.28, ease: 'easeInOut' })
-      await animate(x, 0, SNAP_SPRING)
+      animate(x, 36, { duration: 0.22, ease: 'easeOut' })
+        .then(() => animate(x, -24, { duration: 0.28, ease: 'easeInOut' }))
+        .then(() => animate(x, 0, SNAP_SPRING))
     }, 1400)
     return () => clearTimeout(t)
   }, [shouldReduceMotion, x])
@@ -99,9 +95,7 @@ export function BluffOrTruthStage({
       animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
       exit={{ opacity: 0 }}
       transition={
-        shouldReduceMotion
-          ? { duration: 0 }
-          : { duration: 0.36, ease: [0.32, 0.72, 0, 1] as const }
+        shouldReduceMotion ? { duration: 0 } : { duration: 0.36, ease: [0.32, 0.72, 0, 1] as const }
       }
     >
       <div className="absolute inset-0 flex flex-col">
@@ -184,11 +178,9 @@ export function BluffOrTruthStage({
             {/* Author + caption (part of post, swipes with image) */}
             <div className="relative z-10 flex min-h-0 shrink-0 flex-col space-y-2 px-4 pt-3 pb-2">
               <div className="flex items-center gap-2.5 shrink-0">
-                <img
-                  src={post.authorImgUrl}
-                  alt=""
-                  className="size-8 rounded-full shrink-0 object-cover ring-2 ring-white/20"
-                />
+                <Avatar className="size-8 shrink-0 ring-2 ring-white/20">
+                  <AvatarImage src={post.authorImgUrl} alt="" />
+                </Avatar>
                 <div className="min-w-0 flex-1">
                   <p className="text-xs font-bold text-white leading-none truncate">
                     {post.authorName}
@@ -198,9 +190,11 @@ export function BluffOrTruthStage({
                   </p>
                 </div>
               </div>
-              <p className="text-[13px] font-semibold text-white leading-snug">
-                "{post.claim}"
-              </p>
+              {post.caption && (
+                <p className="text-[13px] font-semibold text-white leading-snug">
+                  &ldquo;{post.caption}&rdquo;
+                </p>
+              )}
             </div>
           </motion.div>
         </div>

@@ -1,2 +1,1 @@
-export type { Stage } from './constants'
-export type { DemoPostData as IPostData } from './constants'
+export type { DemoPostData as IPostData, Stage } from './constants'

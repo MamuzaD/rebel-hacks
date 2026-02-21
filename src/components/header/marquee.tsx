@@ -5,7 +5,7 @@ export function Marquee() {
     <div className="relative w-full overflow-hidden border-b border-border/50 bg-primary">
       <MagicMarquee
         // pauseOnHover
-        className="py-2 text-sm font-black text-foreground [--duration:5s] font-sans"
+        className="py-2 text-sm font-black text-foreground [--duration:12s] font-sans"
       >
         <span>Rebel Hacks 2026</span>
         <span>Bluff</span>

@@ -11,7 +11,15 @@ import { useEffect, useRef, useState } from 'react'
 import { BluffOrTruthStage } from './bluff-or-truth-stage'
 import { PromptStage } from './prompt-stage'
 import { RevealStage } from './reveal-stage'
-import { FLYOUT_DURATION, FLYOUT_EASE, STAGE_DURATIONS } from './constants'
+import {
+  CHIPS_LOSE,
+  CHIPS_WIN,
+  DEMO_POSTS,
+  FLYOUT_DURATION,
+  FLYOUT_EASE,
+  REVEAL_STAGE,
+  STAGE_DURATIONS,
+} from './constants'
 import { BatteryIcon } from './battery-icon'
 import type { Stage } from './types'
 
@@ -54,6 +62,7 @@ export function HeroDemo() {
   const [userVote, setUserVote] = useState<boolean | null>(null)
   const [isDragging, setIsDragging] = useState(false)
   const [isVoting, setIsVoting] = useState(false)
+  const [totalChips, setTotalChips] = useState(0)
   const hintAnimatedRef = useRef(false)
 
   const x = useMotionValue(0)
@@ -64,7 +73,7 @@ export function HeroDemo() {
 
     const t = setTimeout(() => {
       if (stage === 'prompt') {
-        setActualWasTruth(photoIndex % 2 === 0)
+        setActualWasTruth(DEMO_POSTS[photoIndex % DEMO_POSTS.length].isTruth)
         setStage('bluffOrTruth')
         hintAnimatedRef.current = false
       } else {
@@ -86,7 +95,11 @@ export function HeroDemo() {
 
   const commitVote = (truth: boolean) => {
     setUserVote(truth)
-    setActualWasTruth(photoIndex % 2 === 0)
+    const post = DEMO_POSTS[photoIndex % DEMO_POSTS.length]
+    setActualWasTruth(post.isTruth)
+    setTotalChips((prev) =>
+      prev + (truth === post.isTruth ? CHIPS_WIN : -CHIPS_LOSE)
+    )
     setStage('reveal')
   }
 
@@ -134,6 +147,20 @@ export function HeroDemo() {
                   className="h-20 w-auto rounded-lg object-contain"
                 />
                 <span className="text-white text-4xl font-bold font-heading-display italic">Bluff</span>
+                {isLocked && (
+                  <div className="flex flex-col items-center gap-0.5 pt-2">
+                    <span
+                      className={`text-2xl font-black tabular-nums ${
+                        totalChips >= 0 ? 'text-success' : 'text-destructive'
+                      }`}
+                    >
+                      {totalChips >= 0 ? '+' : ''}{totalChips}
+                    </span>
+                    <span className="text-sm font-semibold text-white/35">
+                      {REVEAL_STAGE.chipsLabel}
+                    </span>
+                  </div>
+                )}
               </motion.div>
             </AnimatePresence>
           ) : (

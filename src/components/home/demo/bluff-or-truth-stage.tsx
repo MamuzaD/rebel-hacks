@@ -108,20 +108,20 @@ export function BluffOrTruthStage({
         {/* Swipeable post only — image, author, caption move; labels + buttons stay fixed */}
         <div
           {...swipeHandlers}
-          className="flex min-h-0 flex-1 flex-col overflow-hidden"
+          className="flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto"
           style={{ touchAction: 'pan-y' }}
         >
           <motion.div
-            className={`flex flex-1 flex-col select-none ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+            className={`flex min-h-0 max-h-full flex-col select-none ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
             style={{
               x,
               rotate,
               transformOrigin: '50% 85%',
             }}
           >
-            {/* Image card — centered, rounded */}
-            <div className="flex flex-1 items-center justify-center px-4 pt-4">
-              <div className="relative aspect-[3/4] w-full max-w-[240px] overflow-hidden rounded-2xl shadow-2xl">
+            {/* Image card — fixed aspect so it always shows; min height so it never collapses */}
+            <div className="flex min-h-[180px] flex-1 items-center justify-center px-4 pt-4 pb-3">
+              <div className="relative aspect-[3/4] w-full max-w-[240px] shrink-0 overflow-hidden rounded-2xl shadow-2xl">
                 <img
                   src={post.imageUrl}
                   alt=""
@@ -182,15 +182,12 @@ export function BluffOrTruthStage({
             </div>
 
             {/* Author + caption (part of post, swipes with image) */}
-            <div className="shrink-0 space-y-2 px-4 pb-2">
-              <div className="flex items-center gap-2.5">
-                <div
-                  className="size-8 rounded-full shrink-0"
-                  style={{
-                    background:
-                      'linear-gradient(135deg, color-mix(in oklch, var(--primary) 60%, white) 0%, color-mix(in oklch, var(--primary) 40%, black) 100%)',
-                    boxShadow: '0 0 0 2px rgba(255,255,255,0.2)',
-                  }}
+            <div className="relative z-10 flex min-h-0 shrink-0 flex-col space-y-2 px-4 pt-3 pb-2">
+              <div className="flex items-center gap-2.5 shrink-0">
+                <img
+                  src={post.authorImgUrl}
+                  alt=""
+                  className="size-8 rounded-full shrink-0 object-cover ring-2 ring-white/20"
                 />
                 <div className="min-w-0 flex-1">
                   <p className="text-xs font-bold text-white leading-none truncate">
@@ -201,7 +198,7 @@ export function BluffOrTruthStage({
                   </p>
                 </div>
               </div>
-              <p className="text-[13px] font-semibold text-white leading-snug line-clamp-2">
+              <p className="text-[13px] font-semibold text-white leading-snug">
                 "{post.claim}"
               </p>
             </div>

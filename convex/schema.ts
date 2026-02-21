@@ -1,11 +1,6 @@
 import { defineSchema, defineTable } from 'convex/server'
 import { v } from 'convex/values'
-import {
-  chipReason,
-  friendshipStatus,
-  reactionType,
-  voteGuess,
-} from './lib/validators'
+import { chipReason, friendshipStatus, reactionType, voteGuess } from './lib/validators'
 
 export default defineSchema({
   users: defineTable({

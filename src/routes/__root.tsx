@@ -6,19 +6,20 @@ import {
 } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 
-import Header from '../components/header'
+import { RootError } from '@/components/error'
+import Header from '@/components/header'
+import { NotFound } from '@/components/not-found'
+import ConvexProvider from '@/integrations/convex/provider'
 
-import ConvexProvider from '../integrations/convex/provider'
+import ClerkProvider from '@/integrations/clerk/provider'
 
-import ClerkProvider from '../integrations/clerk/provider'
+import TanStackQueryProvider from '@/integrations/tanstack-query/provider'
 
-import TanStackQueryProvider from '../integrations/tanstack-query/root-provider'
+import TanStackQueryDevtools from '@/integrations/tanstack-query/devtools'
 
-import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
+import appCss from '@/styles.css?url'
 
-import appCss from '../styles.css?url'
-
-import { ThemeProvider } from '@/components/theme-provider'
+import { ThemeProvider } from '@/components/theme/provider'
 import type { QueryClient } from '@tanstack/react-query'
 
 interface MyRouterContext {
@@ -26,6 +27,9 @@ interface MyRouterContext {
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
+  // Protected routes use RequireAuth in _app (see Authenticated Routes: React context/hooks).
+  notFoundComponent: NotFound,
+  errorComponent: RootError,
   head: () => ({
     meta: [
       {
@@ -36,7 +40,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: 'Bluff',
       },
     ],
     links: [
@@ -77,17 +81,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           <ConvexProvider>
             <TanStackQueryProvider>
               <ThemeProvider>
-                {/* <LightRays */}
-                {/*   color="rgba(160, 20, 20, 1.0)" */}
-                {/*   count={10} */}
-                {/*   blur={32} */}
-                {/*   speed={5} */}
-                {/*   length="90vh" */}
-                {/* /> */}
                 <Header />
-                <main className="pt-32 px-16 mx-auto max-w-screen-2xl">
+                {/* always have the same gap on sides */}
+                <main className="relative z-10 pt-32 px-16 mx-auto max-w-screen-2xl">
                   {children}
                 </main>
+                {/* tanstack dev tools */}
                 <TanStackDevtools
                   config={{
                     position: 'bottom-left',

@@ -1,5 +1,3 @@
-
-
 export const SUBTITLE_TEXTS = [
   'Can your friends call your bluff?',
   'Would you bet on it?',

@@ -11,8 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteRouteImport } from './routes/_app/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AppProfileRouteImport } from './routes/_app/profile'
+import { Route as AppHistoryRouteImport } from './routes/_app/history'
 import { Route as AppFeedRouteImport } from './routes/_app/feed'
+import { Route as AppUUsernameRouteImport } from './routes/_app/u/$username'
 
 const AppRouteRoute = AppRouteRouteImport.update({
   id: '/_app',
@@ -23,9 +24,9 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppProfileRoute = AppProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
+const AppHistoryRoute = AppHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
   getParentRoute: () => AppRouteRoute,
 } as any)
 const AppFeedRoute = AppFeedRouteImport.update({
@@ -33,30 +34,44 @@ const AppFeedRoute = AppFeedRouteImport.update({
   path: '/feed',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppUUsernameRoute = AppUUsernameRouteImport.update({
+  id: '/u/$username',
+  path: '/u/$username',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/feed': typeof AppFeedRoute
-  '/profile': typeof AppProfileRoute
+  '/history': typeof AppHistoryRoute
+  '/u/$username': typeof AppUUsernameRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/feed': typeof AppFeedRoute
-  '/profile': typeof AppProfileRoute
+  '/history': typeof AppHistoryRoute
+  '/u/$username': typeof AppUUsernameRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_app': typeof AppRouteRouteWithChildren
   '/_app/feed': typeof AppFeedRoute
-  '/_app/profile': typeof AppProfileRoute
+  '/_app/history': typeof AppHistoryRoute
+  '/_app/u/$username': typeof AppUUsernameRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/feed' | '/profile'
+  fullPaths: '/' | '/feed' | '/history' | '/u/$username'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/feed' | '/profile'
-  id: '__root__' | '/' | '/_app' | '/_app/feed' | '/_app/profile'
+  to: '/' | '/feed' | '/history' | '/u/$username'
+  id:
+    | '__root__'
+    | '/'
+    | '/_app'
+    | '/_app/feed'
+    | '/_app/history'
+    | '/_app/u/$username'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -80,11 +95,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app/profile': {
-      id: '/_app/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof AppProfileRouteImport
+    '/_app/history': {
+      id: '/_app/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof AppHistoryRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/feed': {
@@ -94,17 +109,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppFeedRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/u/$username': {
+      id: '/_app/u/$username'
+      path: '/u/$username'
+      fullPath: '/u/$username'
+      preLoaderRoute: typeof AppUUsernameRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
   }
 }
 
 interface AppRouteRouteChildren {
   AppFeedRoute: typeof AppFeedRoute
-  AppProfileRoute: typeof AppProfileRoute
+  AppHistoryRoute: typeof AppHistoryRoute
+  AppUUsernameRoute: typeof AppUUsernameRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppFeedRoute: AppFeedRoute,
-  AppProfileRoute: AppProfileRoute,
+  AppHistoryRoute: AppHistoryRoute,
+  AppUUsernameRoute: AppUUsernameRoute,
 }
 
 const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(

@@ -12,20 +12,13 @@ type ResolvedTheme = 'dark' | 'light'
 
 function getSystemTheme(): ResolvedTheme {
   if (typeof window === 'undefined') return 'light'
-  return window.matchMedia('(prefers-color-scheme: dark)').matches
-    ? 'dark'
-    : 'light'
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }
 
-function getStoredTheme(
-  storageKey: string,
-  defaultTheme: Theme
-): Theme {
+function getStoredTheme(storageKey: string, defaultTheme: Theme): Theme {
   if (typeof window === 'undefined') return defaultTheme
   const raw = localStorage.getItem(storageKey)
-  return raw === 'dark' || raw === 'light' || raw === 'system'
-    ? raw
-    : defaultTheme
+  return raw === 'dark' || raw === 'light' || raw === 'system' ? raw : defaultTheme
 }
 
 type ThemeProviderState = {
@@ -49,14 +42,11 @@ export function ThemeProvider({
   ...props
 }: ThemeProviderProps) {
   // Initialize from localStorage once (SSR-safe). To reset when storageKey/defaultTheme change, use key prop: <ThemeProvider key={`${storageKey}-${defaultTheme}`} />.
-  const [theme, setTheme] = useState<Theme>(() =>
-    getStoredTheme(storageKey, defaultTheme)
-  )
+  const [theme, setTheme] = useState<Theme>(() => getStoredTheme(storageKey, defaultTheme))
   // Only system preference changes; resolved theme is derived during render.
   const [systemTheme, setSystemTheme] = useState<ResolvedTheme>(getSystemTheme)
 
-  const resolvedTheme: ResolvedTheme =
-    theme === 'system' ? systemTheme : theme
+  const resolvedTheme: ResolvedTheme = theme === 'system' ? systemTheme : theme
 
   // Apply theme to DOM and subscribe to system preference when theme === 'system'
   useEffect(() => {

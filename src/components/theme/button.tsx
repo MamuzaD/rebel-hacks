@@ -13,18 +13,16 @@ export function ThemeButton() {
     }
   }
 
-  const renderIcon = () => {
-    switch (resolvedTheme) {
-      case 'light':
-        return <Sun className="h-[1.2rem] w-[1.2rem]" />
-      case 'dark':
-        return <Moon className="h-[1.2rem] w-[1.2rem]" />
-    }
-  }
+  const icon =
+    resolvedTheme === 'light' ? (
+      <Sun className="h-[1.2rem] w-[1.2rem]" />
+    ) : (
+      <Moon className="h-[1.2rem] w-[1.2rem]" />
+    )
 
   return (
     <Button variant="outline" size="icon" onClick={toggleTheme}>
-      {renderIcon()}
+      {icon}
       <span className="sr-only">Toggle theme</span>
     </Button>
   )

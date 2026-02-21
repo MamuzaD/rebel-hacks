@@ -30,14 +30,7 @@ const screenWrapperStyle = {
   borderRadius: `${RADIUS_H}% / ${RADIUS_V}%`,
 } as const
 
-export function Iphone({
-  src,
-  videoSrc,
-  children,
-  className,
-  style,
-  ...props
-}: IphoneProps) {
+export function Iphone({ src, videoSrc, children, className, style, ...props }: IphoneProps) {
   const hasVideo = !!videoSrc
   const hasCustomContent = !!children
   const hasMedia = hasVideo || !!src || hasCustomContent
@@ -94,11 +87,7 @@ export function Iphone({
             borderRadius: `${RADIUS_H}% / ${RADIUS_V}%`,
           }}
         >
-          <img
-            src={src}
-            alt=""
-            className="block size-full object-cover object-top"
-          />
+          <img src={src} alt="" className="block size-full object-cover object-top" />
         </div>
       )}
 
@@ -163,13 +152,7 @@ export function Iphone({
 
         <defs>
           <mask id="screenPunch" maskUnits="userSpaceOnUse">
-            <rect
-              x="0"
-              y="0"
-              width={PHONE_WIDTH}
-              height={PHONE_HEIGHT}
-              fill="white"
-            />
+            <rect x="0" y="0" width={PHONE_WIDTH} height={PHONE_HEIGHT} fill="white" />
             <rect
               x={SCREEN_X}
               y={SCREEN_Y}

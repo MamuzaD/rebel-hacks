@@ -170,11 +170,40 @@ export function CreatePostModal({
     },
   })
 
+  const setSelectedImage = (nextFile: File | null) => {
+    form.setFieldValue('imageFile', nextFile)
+    setPreviewUrl((previous) => {
+      if (previous) URL.revokeObjectURL(previous)
+      return nextFile ? URL.createObjectURL(nextFile) : null
+    })
+  }
+
   useEffect(() => {
     return () => {
       if (previewUrl) URL.revokeObjectURL(previewUrl)
     }
   }, [previewUrl])
+
+  useEffect(() => {
+    if (!open) return
+
+    const onPaste = (event: ClipboardEvent) => {
+      const imageItem = Array.from(event.clipboardData?.items ?? []).find((item) =>
+        item.type.startsWith('image/'),
+      )
+      const pastedImage = imageItem?.getAsFile() ?? null
+      if (!pastedImage) return
+
+      event.preventDefault()
+      setSelectedImage(pastedImage)
+      toast.success('Image pasted', {
+        description: 'Ready to post.',
+      })
+    }
+
+    window.addEventListener('paste', onPaste)
+    return () => window.removeEventListener('paste', onPaste)
+  }, [open])
 
   const disabledReason = !isSignedIn
     ? 'Sign in to post.'
@@ -298,7 +327,9 @@ export function CreatePostModal({
                       ) : (
                         <div className="flex flex-col items-center gap-2 py-8">
                           <CameraIcon className="size-8 text-muted-foreground/60" />
-                          <span className="text-sm text-muted-foreground">Tap to add a photo</span>
+                          <span className="text-sm text-muted-foreground">
+                            Tap to add a photo or paste an image
+                          </span>
                         </div>
                       )}
                       <input
@@ -310,11 +341,7 @@ export function CreatePostModal({
                         onBlur={field.handleBlur}
                         onChange={(event) => {
                           const nextFile = event.target.files?.[0] ?? null
-                          field.handleChange(nextFile)
-                          setPreviewUrl((previous) => {
-                            if (previous) URL.revokeObjectURL(previous)
-                            return nextFile ? URL.createObjectURL(nextFile) : null
-                          })
+                          setSelectedImage(nextFile)
                         }}
                       />
                     </label>

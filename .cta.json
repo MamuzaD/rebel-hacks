@@ -15,13 +15,5 @@
   "routerOnly": false,
   "version": 1,
   "framework": "react-cra",
-  "chosenAddOns": [
-    "eslint",
-    "nitro",
-    "convex",
-    "clerk",
-    "shadcn",
-    "tanstack-query",
-    "t3env"
-  ]
+  "chosenAddOns": ["eslint", "nitro", "convex", "clerk", "shadcn", "tanstack-query", "t3env"]
 }

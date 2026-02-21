@@ -30,7 +30,9 @@ export const getActive = query({
       ...normalizeRoundTimestamps(prompt.postWindowStart, prompt.postWindowEnd, prompt.revealTime),
     }))
 
-    const inPostingWindow = normalized.find((n) => now >= n.postWindowStart && now < n.postWindowEnd)
+    const inPostingWindow = normalized.find(
+      (n) => now >= n.postWindowStart && now < n.postWindowEnd,
+    )
     const chosen = inPostingWindow
       ? inPostingWindow
       : (() => {
@@ -134,7 +136,10 @@ export const ensureTodayRound = internalMutation({
         .unique()
       const nextRoundStartMs = nextPrompt?.postWindowStart
 
-      const { postWindowStart, postWindowEnd, revealTime } = getRoundTimestamps(date, nextRoundStartMs)
+      const { postWindowStart, postWindowEnd, revealTime } = getRoundTimestamps(
+        date,
+        nextRoundStartMs,
+      )
       const id = await ctx.db.insert('prompts', {
         prompt: pickRandomPrompt(),
         date,

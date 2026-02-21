@@ -4,14 +4,12 @@ import { lazy, Suspense } from 'react'
 
 import { Hero } from '@/components/home/hero'
 
-const Grain = lazy(() =>
-  import('@/components/bg/grain').then((m) => ({ default: m.Grain })),
-)
+const Grain = lazy(() => import('@/components/bg/grain').then((m) => ({ default: m.Grain })))
 
 export const Route = createFileRoute('/')({ component: IndexComponent })
 
 function IndexComponent() {
-  const { isLoaded, isSignedIn } = useAuth()
+  const { isLoaded } = useAuth()
   const year = new Date().getFullYear()
 
   if (!isLoaded) {
@@ -29,9 +27,7 @@ function IndexComponent() {
         <Grain />
       </Suspense>
       <div className="fixed bottom-1 left-1/2 -translate-x-1/2">
-        <h3 className="font-medium text-background">
-          Built by Daniel, Bluff © {year}
-        </h3>
+        <h3 className="font-medium text-background">Built by Daniel, Bluff © {year}</h3>
       </div>
     </>
   )

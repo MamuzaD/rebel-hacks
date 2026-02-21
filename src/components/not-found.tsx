@@ -32,21 +32,13 @@ export function NotFound() {
           <p className="text-muted-foreground">
             This page doesn&apos;t exist or you don&apos;t have access to it.
           </p>
-          <Link
-            to="/"
-            className="text-primary underline underline-offset-4 hover:no-underline"
-          >
+          <Link to="/" className="text-primary underline underline-offset-4 hover:no-underline">
             Go home
           </Link>
 
-          <span className="text-sm text-muted-foreground text-center">
-            Redirecting…
-          </span>
+          <span className="text-sm text-muted-foreground text-center">Redirecting…</span>
 
-          <Progress
-            value={progress * 100}
-            className="h-1.5 w-full rounded-none"
-          />
+          <Progress value={progress * 100} className="h-1.5 w-full rounded-none" />
         </div>
       </div>
     </>

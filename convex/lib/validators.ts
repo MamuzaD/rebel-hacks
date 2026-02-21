@@ -29,4 +29,3 @@ export const friendshipStatus = v.union(
   v.literal('accepted'),
   v.literal('blocked'),
 )
-

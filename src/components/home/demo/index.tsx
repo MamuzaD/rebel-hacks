@@ -1,16 +1,9 @@
 import { Iphone } from '@/components/ui/phone'
-import {
-  AnimatePresence,
-  animate,
-  motion,
-  useMotionValue,
-  useReducedMotion,
-} from 'motion/react'
+import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 
+import { BatteryIcon } from './battery-icon'
 import { BluffOrTruthStage } from './bluff-or-truth-stage'
-import { PromptStage } from './prompt-stage'
-import { RevealStage } from './reveal-stage'
 import {
   CHIPS_LOSE,
   CHIPS_WIN,
@@ -20,7 +13,8 @@ import {
   REVEAL_STAGE,
   STAGE_DURATIONS,
 } from './constants'
-import { BatteryIcon } from './battery-icon'
+import { PromptStage } from './prompt-stage'
+import { RevealStage } from './reveal-stage'
 import type { Stage } from './types'
 
 const COMPLETED_PLAYS_BEFORE_LOCK = 3
@@ -97,9 +91,7 @@ export function HeroDemo() {
     setUserVote(truth)
     const post = DEMO_POSTS[photoIndex % DEMO_POSTS.length]
     setActualWasTruth(post.isTruth)
-    setTotalChips((prev) =>
-      prev + (truth === post.isTruth ? CHIPS_WIN : -CHIPS_LOSE)
-    )
+    setTotalChips((prev) => prev + (truth === post.isTruth ? CHIPS_WIN : -CHIPS_LOSE))
     setStage('reveal')
   }
 
@@ -116,18 +108,13 @@ export function HeroDemo() {
   }
 
   return (
-    <Iphone
-      style={{ height: 'min(560px, 76vh)', width: 'auto' }}
-      className="mx-auto block"
-    >
+    <Iphone style={{ height: 'min(560px, 76vh)', width: 'auto' }} className="mx-auto block">
       <div className="pointer-events-auto flex size-full flex-col overflow-hidden select-none">
         <div
           className="flex h-8 w-full shrink-0 items-center justify-between bg-black px-7 pt-1 shadow-[0_20px_40px_-4px_rgba(0,0,0,0.8)]"
           aria-hidden
         >
-          <span className="text-[11px] font-semibold tabular-nums text-white">
-            {time}
-          </span>
+          <span className="text-[11px] font-semibold tabular-nums text-white">{time}</span>
           <BatteryIcon />
         </div>
         <div className="relative min-h-0 flex-1 overflow-hidden bg-zinc-950 p-16">
@@ -146,7 +133,9 @@ export function HeroDemo() {
                   alt=""
                   className="h-20 w-auto rounded-lg object-contain"
                 />
-                <span className="text-white text-4xl font-bold font-heading-display italic">Bluff</span>
+                <span className="text-white text-4xl font-bold font-heading-display italic">
+                  Bluff
+                </span>
                 {isLocked && (
                   <div className="flex flex-col items-center gap-0.5 pt-2">
                     <span
@@ -154,7 +143,8 @@ export function HeroDemo() {
                         totalChips >= 0 ? 'text-success' : 'text-destructive'
                       }`}
                     >
-                      {totalChips >= 0 ? '+' : ''}{totalChips}
+                      {totalChips >= 0 ? '+' : ''}
+                      {totalChips}
                     </span>
                     <span className="text-sm font-semibold text-white/35">
                       {REVEAL_STAGE.chipsLabel}

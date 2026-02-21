@@ -1,4 +1,4 @@
-export const REVEAL_SUCCESS_MESSAGES = [
+const REVEAL_SUCCESS_MESSAGES = [
   'You read it right',
   'Nailed it',
   'Sharp eye',

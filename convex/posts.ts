@@ -46,9 +46,7 @@ export const create = mutation({
     }
     const existing = await ctx.db
       .query('posts')
-      .withIndex('authorId_promptId', (q) =>
-        q.eq('authorId', userId).eq('promptId', args.promptId),
-      )
+      .withIndex('authorId_promptId', (q) => q.eq('authorId', userId).eq('promptId', args.promptId))
       .first()
     if (existing) throw new Error('Already posted for this prompt')
 
@@ -110,9 +108,7 @@ export const getMineForPrompt = query({
     const userId = await requireUserId(ctx)
     const post = await ctx.db
       .query('posts')
-      .withIndex('authorId_promptId', (q) =>
-        q.eq('authorId', userId).eq('promptId', args.promptId),
-      )
+      .withIndex('authorId_promptId', (q) => q.eq('authorId', userId).eq('promptId', args.promptId))
       .order('desc')
       .first()
     return post ? toPublicPost(post) : null
@@ -198,10 +194,13 @@ export const listGlobalFeedPaginated = query({
   },
   handler: async (ctx, args) => {
     const limit = Math.min(Math.max(1, Math.floor(args.limit ?? DEFAULT_PAGE_SIZE)), MAX_PAGE_SIZE)
-    const page = await ctx.db.query('posts').order('desc').paginate({
-      numItems: limit,
-      cursor: args.cursor ?? null,
-    })
+    const page = await ctx.db
+      .query('posts')
+      .order('desc')
+      .paginate({
+        numItems: limit,
+        cursor: args.cursor ?? null,
+      })
 
     return {
       posts: page.page.map(toPublicPost),

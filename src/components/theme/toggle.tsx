@@ -7,11 +7,7 @@ export function ThemeToggle() {
   const { theme, setTheme } = useTheme()
 
   return (
-    <div
-      className="flex gap-1 rounded-lg bg-muted/60 p-0.5"
-      role="group"
-      aria-label="Theme"
-    >
+    <div className="flex gap-1 rounded-lg bg-muted/60 p-0.5" role="group" aria-label="Theme">
       <Button
         type="button"
         variant="ghost"

@@ -26,10 +26,8 @@ const inputGroupAddonVariants = cva(
   {
     variants: {
       align: {
-        'inline-start':
-          'pl-3 has-[>button]:-ml-1 has-[>kbd]:ml-[-0.15rem] order-first',
-        'inline-end':
-          'pr-3 has-[>button]:-mr-1 has-[>kbd]:mr-[-0.15rem] order-last',
+        'inline-start': 'pl-3 has-[>button]:-ml-1 has-[>kbd]:ml-[-0.15rem] order-first',
+        'inline-end': 'pr-3 has-[>button]:-mr-1 has-[>kbd]:mr-[-0.15rem] order-last',
         'block-start':
           'px-3 pt-3 group-has-[>input]/input-group:pt-3 [.border-b]:pb-3 order-first w-full justify-start',
         'block-end':
@@ -47,9 +45,14 @@ function InputGroupAddon({
   align = 'inline-start',
   ...props
 }: React.ComponentProps<'div'> & VariantProps<typeof inputGroupAddonVariants>) {
+  const focusInput = (container: HTMLDivElement) => {
+    container.parentElement?.querySelector('input')?.focus()
+  }
+
   return (
     <div
       role="group"
+      tabIndex={0}
       data-slot="input-group-addon"
       data-align={align}
       className={cn(inputGroupAddonVariants({ align }), className)}
@@ -57,29 +60,36 @@ function InputGroupAddon({
         if ((e.target as HTMLElement).closest('button')) {
           return
         }
-        e.currentTarget.parentElement?.querySelector('input')?.focus()
+        focusInput(e.currentTarget)
+      }}
+      onKeyDown={(e) => {
+        if (e.key !== 'Enter' && e.key !== ' ') {
+          return
+        }
+        if ((e.target as HTMLElement).closest('button')) {
+          return
+        }
+        e.preventDefault()
+        focusInput(e.currentTarget)
       }}
       {...props}
     />
   )
 }
 
-const inputGroupButtonVariants = cva(
-  'gap-2 rounded-4xl text-sm shadow-none flex items-center',
-  {
-    variants: {
-      size: {
-        xs: "h-6 gap-1 px-1.5 [&>svg:not([class*='size-'])]:size-3.5",
-        sm: '',
-        'icon-xs': 'size-6 p-0 has-[>svg]:p-0',
-        'icon-sm': 'size-8 p-0 has-[>svg]:p-0',
-      },
-    },
-    defaultVariants: {
-      size: 'xs',
+const inputGroupButtonVariants = cva('gap-2 rounded-4xl text-sm shadow-none flex items-center', {
+  variants: {
+    size: {
+      xs: "h-6 gap-1 px-1.5 [&>svg:not([class*='size-'])]:size-3.5",
+      sm: '',
+      'icon-xs': 'size-6 p-0 has-[>svg]:p-0',
+      'icon-sm': 'size-8 p-0 has-[>svg]:p-0',
     },
   },
-)
+  defaultVariants: {
+    size: 'xs',
+  },
+})
 
 function InputGroupButton({
   className,
@@ -114,10 +124,7 @@ function InputGroupText({ className, ...props }: React.ComponentProps<'span'>) {
   )
 }
 
-function InputGroupInput({
-  className,
-  ...props
-}: React.ComponentProps<'input'>) {
+function InputGroupInput({ className, ...props }: React.ComponentProps<'input'>) {
   return (
     <Input
       data-slot="input-group-control"
@@ -130,10 +137,7 @@ function InputGroupInput({
   )
 }
 
-function InputGroupTextarea({
-  className,
-  ...props
-}: React.ComponentProps<'textarea'>) {
+function InputGroupTextarea({ className, ...props }: React.ComponentProps<'textarea'>) {
   return (
     <Textarea
       data-slot="input-group-control"

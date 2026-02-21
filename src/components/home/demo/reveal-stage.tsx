@@ -1,7 +1,4 @@
-import {
-  randomRevealFailureMessage,
-  randomRevealSuccessMessage,
-} from '@/constants/messages'
+import { randomRevealFailureMessage, randomRevealSuccessMessage } from '@/constants/messages'
 import { motion, useReducedMotion } from 'motion/react'
 import { useMemo } from 'react'
 import { CHIPS_LOSE, CHIPS_WIN, REVEAL_STAGE } from './constants'
@@ -12,11 +9,7 @@ interface RevealStageProps {
   userCorrect: boolean
 }
 
-export function RevealStage({
-  actualWasTruth,
-  userVote,
-  userCorrect,
-}: RevealStageProps) {
+export function RevealStage({ actualWasTruth, userVote, userCorrect }: RevealStageProps) {
   const shouldReduceMotion = useReducedMotion()
   const noMotion = { duration: 0 }
   const resultMessage = useMemo(
@@ -41,20 +34,10 @@ export function RevealStage({
       {userVote !== null && (
         <motion.div
           className="flex flex-col items-center gap-2"
-          initial={
-            shouldReduceMotion
-              ? { opacity: 0 }
-              : { scale: 0.5, opacity: 0 }
-          }
-          animate={
-            shouldReduceMotion
-              ? { opacity: 1 }
-              : { scale: 1, opacity: 1 }
-          }
+          initial={shouldReduceMotion ? { opacity: 0 } : { scale: 0.5, opacity: 0 }}
+          animate={shouldReduceMotion ? { opacity: 1 } : { scale: 1, opacity: 1 }}
           transition={
-            shouldReduceMotion
-              ? noMotion
-              : { type: 'spring', stiffness: 400, damping: 22 }
+            shouldReduceMotion ? noMotion : { type: 'spring', stiffness: 400, damping: 22 }
           }
         >
           <div
@@ -66,27 +49,49 @@ export function RevealStage({
             }}
           >
             {userCorrect ? (
-              <svg viewBox="0 0 24 24" className="size-8 text-success" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                viewBox="0 0 24 24"
+                className="size-8 text-success"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={3}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <motion.path
                   d="M5 13l4 4L19 7"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
-                  transition={shouldReduceMotion ? noMotion : { delay: 0.15, duration: 0.35, ease: 'easeOut' }}
+                  transition={
+                    shouldReduceMotion ? noMotion : { delay: 0.15, duration: 0.35, ease: 'easeOut' }
+                  }
                 />
               </svg>
             ) : (
-              <svg viewBox="0 0 24 24" className="size-8 text-destructive" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                viewBox="0 0 24 24"
+                className="size-8 text-destructive"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={3}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <motion.path
                   d="M18 6L6 18"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
-                  transition={shouldReduceMotion ? noMotion : { delay: 0.1, duration: 0.2, ease: 'easeOut' }}
+                  transition={
+                    shouldReduceMotion ? noMotion : { delay: 0.1, duration: 0.2, ease: 'easeOut' }
+                  }
                 />
                 <motion.path
                   d="M6 6l12 12"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
-                  transition={shouldReduceMotion ? noMotion : { delay: 0.2, duration: 0.2, ease: 'easeOut' }}
+                  transition={
+                    shouldReduceMotion ? noMotion : { delay: 0.2, duration: 0.2, ease: 'easeOut' }
+                  }
                 />
               </svg>
             )}
@@ -103,11 +108,7 @@ export function RevealStage({
         className={`rounded-2xl px-8 py-3 text-center border-[3px] ${actualWasTruth ? 'border-success/50' : 'border-destructive/50'}`}
         initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
         animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
-        transition={
-          shouldReduceMotion
-            ? noMotion
-            : { delay: 0.18, duration: 0.3, ease: 'easeOut' }
-        }
+        transition={shouldReduceMotion ? noMotion : { delay: 0.18, duration: 0.3, ease: 'easeOut' }}
       >
         <p className="text-[11px] font-bold uppercase tracking-widest text-white/40">
           {REVEAL_STAGE.prefix}

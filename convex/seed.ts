@@ -187,9 +187,7 @@ export const runWithStorageId = internalMutation({
       const authorId = userIds[i]
       const existing = await ctx.db
         .query('posts')
-        .withIndex('authorId_promptId', (q) =>
-          q.eq('authorId', authorId).eq('promptId', promptId),
-        )
+        .withIndex('authorId_promptId', (q) => q.eq('authorId', authorId).eq('promptId', promptId))
         .first()
       if (existing) {
         posts.push(existing._id)

@@ -29,8 +29,7 @@ export function PromptStage({ photoIndex }: PromptStageProps) {
         style={{
           background:
             'radial-gradient(circle, color-mix(in oklch, var(--primary) 18%, transparent) 0%, transparent 70%)',
-          boxShadow:
-            '0 0 40px color-mix(in oklch, var(--primary) 25%, transparent)',
+          boxShadow: '0 0 40px color-mix(in oklch, var(--primary) 25%, transparent)',
         }}
         animate={
           shouldReduceMotion
@@ -66,16 +65,14 @@ export function PromptStage({ photoIndex }: PromptStageProps) {
 
       {/* Dot indicators */}
       <div className="flex items-center gap-1.5">
-        {DEMO_POSTS.map((_, i) => (
+        {DEMO_POSTS.map((post, i) => (
           <div
-            key={i}
+            key={`${post.authorHandle}-${i}`}
             className="h-1 rounded-full transition-all duration-300"
             style={{
               width: i === photoIndex % DEMO_POSTS.length ? 18 : 6,
               background:
-                i === photoIndex % DEMO_POSTS.length
-                  ? 'var(--primary)'
-                  : 'rgba(255,255,255,0.14)',
+                i === photoIndex % DEMO_POSTS.length ? 'var(--primary)' : 'rgba(255,255,255,0.14)',
             }}
           />
         ))}
@@ -83,4 +80,3 @@ export function PromptStage({ photoIndex }: PromptStageProps) {
     </motion.div>
   )
 }
-

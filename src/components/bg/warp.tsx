@@ -9,9 +9,7 @@ export function Warp() {
       <WarpShader
         width={1280}
         height={720}
-        colors={
-          resolvedTheme === 'dark' ? ['#eb003f', '#000000'] : ['#eb003f', '#ffffff']
-        }
+        colors={resolvedTheme === 'dark' ? ['#eb003f', '#000000'] : ['#eb003f', '#ffffff']}
         proportion={0.57}
         softness={0.5}
         distortion={0}

@@ -1,14 +1,13 @@
+import '@/env'
 import { TanStackDevtools } from '@tanstack/react-devtools'
-import {
-  HeadContent,
-  Scripts,
-  createRootRouteWithContext,
-} from '@tanstack/react-router'
+import { HeadContent, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 
+import { ConvexAuthSync } from '@/components/convex-auth-sync'
 import { RootError } from '@/components/error'
 import Header from '@/components/header'
 import { NotFound } from '@/components/not-found'
+import { UserProvider } from '@/contexts/user-context'
 import ConvexProvider from '@/integrations/convex/provider'
 
 import ClerkProvider from '@/integrations/clerk/provider'
@@ -20,6 +19,8 @@ import TanStackQueryDevtools from '@/integrations/tanstack-query/devtools'
 import appCss from '@/styles.css?url'
 
 import { ThemeProvider } from '@/components/theme/provider'
+import { Toaster } from '@/components/ui/sonner'
+import { TooltipProvider } from '@/components/ui/tooltip'
 import type { QueryClient } from '@tanstack/react-query'
 
 interface MyRouterContext {
@@ -80,26 +81,32 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <ClerkProvider>
           <ConvexProvider>
             <TanStackQueryProvider>
-              <ThemeProvider>
-                <Header />
-                {/* always have the same gap on sides */}
-                <main className="relative z-10 pt-32 px-16 mx-auto max-w-screen-2xl">
-                  {children}
-                </main>
-                {/* tanstack dev tools */}
-                <TanStackDevtools
-                  config={{
-                    position: 'bottom-left',
-                  }}
-                  plugins={[
-                    {
-                      name: 'Tanstack Router',
-                      render: <TanStackRouterDevtoolsPanel />,
-                    },
-                    TanStackQueryDevtools,
-                  ]}
-                />
-              </ThemeProvider>
+              <UserProvider>
+                <ThemeProvider>
+                  <TooltipProvider>
+                    <ConvexAuthSync />
+                    <Header />
+                    {/* always have the same gap on sides */}
+                    <main className="relative pt-32 px-16 mx-auto max-w-screen-2xl">
+                      {children}
+                    </main>
+                    <Toaster />
+                    {/* tanstack dev tools */}
+                    <TanStackDevtools
+                      config={{
+                        position: 'bottom-left',
+                      }}
+                      plugins={[
+                        {
+                          name: 'Tanstack Router',
+                          render: <TanStackRouterDevtoolsPanel />,
+                        },
+                        TanStackQueryDevtools,
+                      ]}
+                    />
+                  </TooltipProvider>
+                </ThemeProvider>
+              </UserProvider>
             </TanStackQueryProvider>
           </ConvexProvider>
         </ClerkProvider>

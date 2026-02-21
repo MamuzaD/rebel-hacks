@@ -27,7 +27,7 @@ export default function Header() {
           text-4xl
           md:text-6xl font-semibold tracking-tigher"
         >
-          <Link to="/">Bluff</Link>
+          <Link to="/" className="select-none">Bluff</Link>
         </h1>
 
         <ClerkHeader />

@@ -173,6 +173,10 @@ code {
 }
 
 @layer base {
+  ::selection {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+  }
   * {
     @apply border-border outline-ring/50;
   }

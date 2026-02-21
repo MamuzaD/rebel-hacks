@@ -15,7 +15,7 @@ export const PROMPT_STAGE = {
 
 /** Prompt text shown for each demo post (index 0, 1, 2). Change these to vary the demo. */
 export const DEMO_PROMPTS: [string, string, string] = [
-  "What's your most overrated Vegas moment? Or your best local secret.",
+  "What's your most overrated Vegas moment?",
   "What's the one spot you'd never tell tourists about?",
   "Best local spot in town. No tourists, no lines — prove it.",
 ]

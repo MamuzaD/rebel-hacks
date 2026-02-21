@@ -1,7 +1,3 @@
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-
 const TELLS = ['Too perfect', 'No receipts', 'Tourist energy'] as const
 
 export type DemoPost = {
@@ -24,58 +20,88 @@ type PostProps = {
 
 function Post({ post }: PostProps) {
   return (
-    <Card className="w-md">
-      <CardHeader className="flex flex-row items-center gap-3 pb-2">
-        <div className="size-10 shrink-0  rounded-full bg-muted">
-          {post.authorAvatar ? (
+    <article className="w-full max-w-md overflow-hidden rounded-2xl bg-card text-card-foreground ring-1 ring-border">
+      {/* Author row */}
+      <div className="flex items-center gap-2.5 px-4 pt-4 pb-3">
+        <div
+          className="size-9 shrink-0 rounded-full ring-2 ring-border"
+          style={{
+            background: post.authorAvatar
+              ? undefined
+              : 'linear-gradient(135deg, color-mix(in oklch, var(--primary) 60%, var(--primary-foreground)) 0%, color-mix(in oklch, var(--primary) 40%, var(--foreground)) 100%)',
+          }}
+        >
+          {post.authorAvatar && (
             <img
               src={post.authorAvatar}
               alt=""
-              className="size-full object-cover"
+              className="size-full rounded-full object-cover"
             />
-          ) : (
-            <div className="size-full bg-primary/30" />
           )}
         </div>
-        <div className="">
-          <p className="truncate font-medium">{post.authorName}</p>
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-semibold text-foreground">
+            {post.authorName}
+          </p>
           <p className="truncate text-xs text-muted-foreground">
             @{post.authorHandle} · {post.timeAgo}
           </p>
         </div>
-      </CardHeader>
-      <CardContent className="space-y-3 px-6 pt-0">
-        <div className="aspect-square w-full overflow-hidden rounded-xl bg-muted">
-          <img src={post.imageUrl} alt="" className="size-full object-cover" />
-        </div>
-        <div>
-          <p className="font-medium leading-snug">{post.claim}</p>
-          {post.caption && (
-            <p className="mt-1 text-sm text-muted-foreground">{post.caption}</p>
-          )}
-        </div>
-      </CardContent>
-      <CardFooter className="flex flex-col gap-3 border-t pt-4">
-        <div className="flex flex-wrap items-center gap-2">
-          <Button variant="outline" size="sm">
-            Truth
-          </Button>
-          <Button variant="outline" size="sm">
-            Bluff
-          </Button>
-          <span className="text-xs text-muted-foreground">
-            {post.voteCount} vote{post.voteCount !== 1 ? 's' : ''}
-          </span>
-        </div>
+      </div>
+
+      {/* Image */}
+      <div className="relative mx-3 aspect-4/5 overflow-hidden rounded-xl">
+        <img
+          src={post.imageUrl}
+          alt=""
+          className="absolute inset-0 size-full object-cover"
+        />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-card/90 via-card/40 to-transparent" />
+      </div>
+
+      {/* Claim + caption */}
+      <div className="space-y-1 px-4 pt-3">
+        <p className="text-[15px] font-semibold leading-snug text-foreground">
+          &ldquo;{post.claim}&rdquo;
+        </p>
+        {post.caption && (
+          <p className="text-sm text-muted-foreground">{post.caption}</p>
+        )}
+      </div>
+
+      {/* Voting */}
+      <div className="flex gap-2 px-4 pt-3">
+        <button
+          type="button"
+          className="flex-1 cursor-pointer rounded-xl border border-destructive/30 bg-destructive/10 py-2 text-sm font-bold text-destructive transition-all active:scale-[0.97]"
+        >
+          Bluff
+        </button>
+        <button
+          type="button"
+          className="flex-1 cursor-pointer rounded-xl border border-success/30 bg-success/10 py-2 text-sm font-bold text-success transition-all active:scale-[0.97]"
+        >
+          Truth
+        </button>
+      </div>
+
+      {/* Tells + vote count */}
+      <div className="flex items-center gap-2 px-4 pt-2.5 pb-4">
         <div className="flex flex-wrap gap-1.5">
           {TELLS.map((tell) => (
-            <Badge key={tell} variant="secondary" className="text-xs">
+            <span
+              key={tell}
+              className="rounded-full bg-muted px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground"
+            >
               {tell}
-            </Badge>
+            </span>
           ))}
         </div>
-      </CardFooter>
-    </Card>
+        <span className="ml-auto shrink-0 text-xs tabular-nums text-muted-foreground/80">
+          {post.voteCount} vote{post.voteCount !== 1 ? 's' : ''}
+        </span>
+      </div>
+    </article>
   )
 }
 

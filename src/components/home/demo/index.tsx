@@ -6,17 +6,33 @@ import {
   useReducedMotion,
 } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
+
 import { BluffOrTruthStage } from './bluff-or-truth-stage'
 import { PromptStage } from './prompt-stage'
 import { RevealStage } from './reveal-stage'
-import {
-  FLYOUT_DURATION,
-  FLYOUT_EASE,
-  STAGE_DURATIONS,
-} from './constants'
+import { FLYOUT_DURATION, FLYOUT_EASE, STAGE_DURATIONS } from './constants'
+import { BatteryIcon } from './battery-icon'
 import type { Stage } from './types'
 
+function useCurrentTime() {
+  const fmt = () => {
+    const now = new Date()
+    return now.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    })
+  }
+  const [time, setTime] = useState(fmt)
+  useEffect(() => {
+    const id = setInterval(() => setTime(fmt()), 1000)
+    return () => clearInterval(id)
+  }, [])
+  return time
+}
+
 export function HeroDemo() {
+  const time = useCurrentTime()
   const shouldReduceMotion = useReducedMotion() ?? false
   const [stage, setStage] = useState<Stage>('prompt')
   const [photoIndex, setPhotoIndex] = useState(0)
@@ -73,9 +89,14 @@ export function HeroDemo() {
     >
       <div className="pointer-events-auto flex size-full flex-col overflow-hidden">
         <div
-          className="aria-hidden h-8 w-full shrink-0 bg-black shadow-[0_20px_40px_-4px_rgba(0,0,0,0.8)]"
+          className="flex h-8 w-full shrink-0 items-center justify-between bg-black px-7 pt-1 shadow-[0_20px_40px_-4px_rgba(0,0,0,0.8)]"
           aria-hidden
-        />
+        >
+          <span className="text-[11px] font-semibold tabular-nums text-white">
+            {time}
+          </span>
+          <BatteryIcon />
+        </div>
         <div className="relative min-h-0 flex-1 overflow-hidden bg-zinc-950 p-16">
           <AnimatePresence mode="wait" initial={false}>
             {stage === 'prompt' && <PromptStage photoIndex={photoIndex} />}

@@ -1,5 +1,7 @@
 import { Button } from '@/components/ui/button'
+import { SUBTITLE_TEXTS } from '@/constants/hero'
 import { motion, useReducedMotion } from 'motion/react'
+import { useState } from 'react'
 import { StripedPattern } from '../bg/striped'
 import { HeroDemo } from './demo'
 
@@ -22,6 +24,9 @@ const stagger = {
 }
 
 export function Hero() {
+  const [subtitle] = useState(
+    () => SUBTITLE_TEXTS[Math.floor(Math.random() * SUBTITLE_TEXTS.length)],
+  )
   const shouldReduceMotion = useReducedMotion()
   const reduced = Boolean(shouldReduceMotion)
   const leftVariants = reduced
@@ -94,7 +99,7 @@ export function Hero() {
           variants={leftVariants}
           transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          1 photo. 1 claim. <br /> Truth or bluff. Can your friends call it?
+          1 photo. 1 claim. <br /> {subtitle}
         </motion.h2>
         <motion.div
           className="mt-6 flex gap-4"

@@ -1,0 +1,18 @@
+
+
+export const SUBTITLE_TEXTS = [
+  'Can your friends call your bluff?',
+  'Would you bet on it?',
+  'Make them believe.',
+  'Think they’ll fall for it?',
+  'Who’s bluffing tonight?',
+  'Call it — or fall for it?',
+  'All in — or all cap?',
+  'Spot the fake.',
+  'Confidence wins.',
+  'Are you that good?',
+  'Fool the table.',
+  'They’re watching.',
+  'Trust your instincts.',
+  'Who’s buying it?',
+]

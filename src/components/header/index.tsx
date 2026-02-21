@@ -37,7 +37,7 @@ export default function Header() {
         </h1>
 
         <div className="flex items-center gap-3">
-          {isHome && isSignedIn ? (
+          {isSignedIn ? (
             <Link to="/feed">
               <Button className="inline-flex gap-4 px-6">
                 <LayoutListIcon />

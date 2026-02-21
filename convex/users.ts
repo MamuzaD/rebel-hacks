@@ -62,7 +62,7 @@ export const syncFromClerk = mutation({
       username,
       displayName,
       avatarUrl,
-      chipBalance: 0,
+      chipBalance: 500,
     })
   },
 })

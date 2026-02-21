@@ -12,13 +12,16 @@
     "test": "vitest run",
     "lint": "eslint",
     "format": "prettier --check .",
-    "check": "prettier --write . && eslint --fix"
+    "check": "prettier --write . && eslint --fix",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@base-ui/react": "^1.2.0",
     "@clerk/clerk-react": "^5.49.0",
+    "@clerk/themes": "^2.2.13",
     "@convex-dev/react-query": "0.1.0",
     "@fontsource-variable/noto-sans": "^5.2.10",
+    "@paper-design/shaders-react": "^0.0.71",
     "@t3-oss/env-core": "^0.13.8",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-devtools": "^0.7.0",
@@ -37,6 +40,7 @@
     "nitro": "npm:nitro-nightly@latest",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-swipeable": "^7.0.2",
     "shadcn": "^3.8.5",
     "tailwind-merge": "^3.0.2",
     "tailwindcss": "^4.1.18",

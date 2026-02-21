@@ -20,7 +20,7 @@ export default function HeaderUser() {
 
       <SignedOut>
         <div className="flex items-center gap-2">
-          <SignInButton mode="modal">
+          <SignInButton mode="modal" forceRedirectUrl="/feed" fallbackRedirectUrl="/feed">
             <Button variant="ghost">Sign in</Button>
           </SignInButton>
           <SignUpButton mode="modal">

@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { SUBTITLE_TEXTS } from '@/constants/hero'
+import { SignInButton, SignUpButton } from '@clerk/clerk-react'
 import { motion, useReducedMotion } from 'motion/react'
 import { useState } from 'react'
 import { StripedPattern } from '../bg/striped'
@@ -106,8 +107,12 @@ export function Hero() {
           variants={leftVariants}
           transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          <Button>Create account</Button>
-          <Button variant="outline">Sign in</Button>
+          <SignInButton mode="modal" forceRedirectUrl="/feed" fallbackRedirectUrl="/feed">
+            <Button variant="ghost">Sign in</Button>
+          </SignInButton>
+          <SignUpButton mode="modal">
+            <Button>Create account</Button>
+          </SignUpButton>
         </motion.div>
       </motion.div>
 

@@ -114,8 +114,8 @@ export function Hero() {
       {/* right */}
       <motion.div
         className="relative hidden md:flex items-center justify-center h-full py-20 z-20 overflow-hidden"
-        initial={reduced ? false : { opacity: 0, x: 32 }}
-        animate={reduced ? undefined : { opacity: 1, x: 0 }}
+        initial={reduced ? false : { opacity: 0, y: 32 }}
+        animate={reduced ? undefined : { opacity: 1, y: 0 }}
         transition={{
           duration: 0.6,
           delay: 0.2,

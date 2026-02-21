@@ -2,6 +2,7 @@ import { Iphone } from '@/components/ui/phone'
 import {
   AnimatePresence,
   animate,
+  motion,
   useMotionValue,
   useReducedMotion,
 } from 'motion/react'
@@ -13,6 +14,11 @@ import { RevealStage } from './reveal-stage'
 import { FLYOUT_DURATION, FLYOUT_EASE, STAGE_DURATIONS } from './constants'
 import { BatteryIcon } from './battery-icon'
 import type { Stage } from './types'
+
+const COMPLETED_PLAYS_BEFORE_LOCK = 3
+/** Logo visible ~1s after hero fade-in; hero has delay 0.2s so total from mount = 1200ms */
+const INITIAL_LOGO_DURATION_MS = 1200
+const LOCKED_LOGO_SRC = '/apple-touch-icon.png'
 
 function useCurrentTime() {
   const fmt = () => {
@@ -36,6 +42,14 @@ export function HeroDemo() {
   const shouldReduceMotion = useReducedMotion() ?? false
   const [stage, setStage] = useState<Stage>('prompt')
   const [photoIndex, setPhotoIndex] = useState(0)
+  const [playCount, setPlayCount] = useState(0)
+  const [isLocked, setIsLocked] = useState(false)
+  const [hasSplashEnded, setHasSplashEnded] = useState(false)
+
+  useEffect(() => {
+    const t = setTimeout(() => setHasSplashEnded(true), INITIAL_LOGO_DURATION_MS)
+    return () => clearTimeout(t)
+  }, [])
   const [actualWasTruth, setActualWasTruth] = useState(true)
   const [userVote, setUserVote] = useState<boolean | null>(null)
   const [isDragging, setIsDragging] = useState(false)
@@ -46,7 +60,7 @@ export function HeroDemo() {
   const userCorrect = userVote !== null && userVote === actualWasTruth
 
   useEffect(() => {
-    if (stage === 'bluffOrTruth') return
+    if (!hasSplashEnded || isLocked || stage === 'bluffOrTruth') return
 
     const t = setTimeout(() => {
       if (stage === 'prompt') {
@@ -54,15 +68,21 @@ export function HeroDemo() {
         setStage('bluffOrTruth')
         hintAnimatedRef.current = false
       } else {
-        setPhotoIndex((p) => p + 1)
-        setUserVote(null)
-        x.set(0)
-        setStage('prompt')
+        const nextPlayCount = playCount + 1
+        if (nextPlayCount >= COMPLETED_PLAYS_BEFORE_LOCK) {
+          setIsLocked(true)
+        } else {
+          setPlayCount(nextPlayCount)
+          setPhotoIndex((p) => p + 1)
+          setUserVote(null)
+          x.set(0)
+          setStage('prompt')
+        }
       }
     }, STAGE_DURATIONS[stage])
 
     return () => clearTimeout(t)
-  }, [photoIndex, stage, x])
+  }, [hasSplashEnded, isLocked, photoIndex, playCount, stage, x])
 
   const commitVote = (truth: boolean) => {
     setUserVote(truth)
@@ -87,7 +107,7 @@ export function HeroDemo() {
       style={{ height: 'min(560px, 76vh)', width: 'auto' }}
       className="mx-auto block"
     >
-      <div className="pointer-events-auto flex size-full flex-col overflow-hidden">
+      <div className="pointer-events-auto flex size-full flex-col overflow-hidden select-none">
         <div
           className="flex h-8 w-full shrink-0 items-center justify-between bg-black px-7 pt-1 shadow-[0_20px_40px_-4px_rgba(0,0,0,0.8)]"
           aria-hidden
@@ -98,28 +118,48 @@ export function HeroDemo() {
           <BatteryIcon />
         </div>
         <div className="relative min-h-0 flex-1 overflow-hidden bg-zinc-950 p-16">
-          <AnimatePresence mode="wait" initial={false}>
-            {stage === 'prompt' && <PromptStage photoIndex={photoIndex} />}
-            {stage === 'bluffOrTruth' && (
-              <BluffOrTruthStage
-                photoIndex={photoIndex}
-                isVoting={isVoting}
-                onVote={handleVote}
-                x={x}
-                isDragging={isDragging}
-                setIsDragging={setIsDragging}
-                hintAnimatedRef={hintAnimatedRef}
-                shouldReduceMotion={shouldReduceMotion}
-              />
-            )}
-            {stage === 'reveal' && (
-              <RevealStage
-                actualWasTruth={actualWasTruth}
-                userVote={userVote}
-                userCorrect={userCorrect}
-              />
-            )}
-          </AnimatePresence>
+          {isLocked || !hasSplashEnded ? (
+            <AnimatePresence>
+              <motion.div
+                key="locked-logo"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.35, delay: 0.45 }}
+                className="flex flex-col gap-4 size-full items-center justify-center"
+              >
+                <img
+                  src={LOCKED_LOGO_SRC}
+                  alt=""
+                  className="h-20 w-auto rounded-lg object-contain"
+                />
+                <span className="text-white text-4xl font-bold font-heading-display italic">Bluff</span>
+              </motion.div>
+            </AnimatePresence>
+          ) : (
+            <AnimatePresence mode="wait" initial={false}>
+              {stage === 'prompt' && <PromptStage photoIndex={photoIndex} />}
+              {stage === 'bluffOrTruth' && (
+                <BluffOrTruthStage
+                  photoIndex={photoIndex}
+                  isVoting={isVoting}
+                  onVote={handleVote}
+                  x={x}
+                  isDragging={isDragging}
+                  setIsDragging={setIsDragging}
+                  hintAnimatedRef={hintAnimatedRef}
+                  shouldReduceMotion={shouldReduceMotion}
+                />
+              )}
+              {stage === 'reveal' && (
+                <RevealStage
+                  actualWasTruth={actualWasTruth}
+                  userVote={userVote}
+                  userCorrect={userCorrect}
+                />
+              )}
+            </AnimatePresence>
+          )}
         </div>
       </div>
     </Iphone>
